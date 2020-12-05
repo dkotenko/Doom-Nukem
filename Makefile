@@ -6,7 +6,7 @@
 #    By: clala <clala@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/15 16:58:46 by clala             #+#    #+#              #
-#    Updated: 2020/02/15 21:53:21 by clala            ###   ########.fr        #
+#    Updated: 2020/12/05 19:02:55 by clala            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ ALL_C = main.c \
 		render_coin.c \
 		move.c \
 		init_bonus.c \
-		set_sdl.c
+		set_sdl.c \
+		bsp.c
 
 SRCDIR = ./src
 OBJDIR = ./objs
@@ -41,7 +42,8 @@ NAME = wolf3d
 INCLUDES = ./includes/wolf3d.h \
 			./includes/const.h \
 			./includes/colors.h \
-			./includes/errors.h
+			./includes/errors.h \
+			./includes/bsp.h
 
 
 LIBFT_DIR = ./libft
