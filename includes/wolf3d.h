@@ -6,7 +6,7 @@
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 18:31:45 by clala             #+#    #+#             */
-/*   Updated: 2020/10/24 22:09:35 by clala            ###   ########.fr       */
+/*   Updated: 2020/12/05 20:18:03 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,22 @@
 # include "const.h"
 # include "colors.h"
 # include "errors.h"
+# include "vec2.h"
+
+typedef struct	s_polygons
+{
+	t_polygon	*polygons_arr;
+	int			amount;
+}			t_polygons;
+
+typedef struct	s_polygon
+{
+	t_vec2		v1;
+	t_vec2		v2;
+	float		height;
+	float		width;
+	int			texture;
+}			t_polygon;
 
 typedef struct	s_map
 {

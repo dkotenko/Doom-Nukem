@@ -6,7 +6,7 @@
 #    By: clala <clala@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/15 16:58:46 by clala             #+#    #+#              #
-#    Updated: 2020/12/05 19:02:55 by clala            ###   ########.fr        #
+#    Updated: 2020/12/05 20:12:37 by clala            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ INCLUDES = ./includes/wolf3d.h \
 			./includes/const.h \
 			./includes/colors.h \
 			./includes/errors.h \
-			./includes/bsp.h
+			./includes/vec2.h
 
 
 LIBFT_DIR = ./libft
