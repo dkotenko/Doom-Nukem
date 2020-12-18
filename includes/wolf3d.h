@@ -25,12 +25,8 @@
 # include "colors.h"
 # include "errors.h"
 # include "vec2.h"
-
-typedef struct	s_polygons
-{
-	t_polygon	*polygons_arr;
-	int			amount;
-}			t_polygons;
+# include "matrix4.h"
+# include "vec4.h"
 
 typedef struct	s_polygon
 {
@@ -40,6 +36,12 @@ typedef struct	s_polygon
 	float		width;
 	int			texture;
 }			t_polygon;
+
+typedef struct	s_polygons
+{
+	t_polygon	*polygons_arr;
+	int			amount;
+}			t_polygons;
 
 typedef struct	s_map
 {
@@ -156,6 +158,45 @@ typedef struct	s_wolf
 	SDL_Surface	*surface;
 	t_bonus		*bon;
 }				t_wolf;
+
+/*
+==========================
+*/
+typedef struct	s_vector3d
+{
+	float		x;
+	float		y;
+	float		z;
+}				t_vector3d;
+
+
+
+typedef	struct s_camera
+{
+	t_vector4d 	position; // np.array([*position, 1.0])
+    t_vector4d 	forward;    	//np.array([0, 0, 1, 1])
+    t_vector4d 	up;//np.array([0, 1, 0, 1])
+	t_vector4d 	right;//np.array([1, 0, 0, 1])
+	float		h_fov; // = math.pi / 3
+	float		v_fov; // = h_fov * (render.HEIGHT / render.WIDTH)
+	float		near_plane; // = 0.1
+	float		far_plane; // = 100
+	float		moving_speed; // = 0.3
+	float		rotation_speed; // = 0.015
+}			t_camera;
+
+t_matrix4	translate(t_camera *camera);
+t_matrix4	rotate_x(float angle);
+t_matrix4	rotate_y(float angle);
+t_matrix4	rotate_z(float angle);
+t_matrix4	scale(float n);
+t_matrix4	get_camera_matrix(t_camera *camera);
+t_matrix4	get_translated_matrix(t_camera *camera);
+t_matrix4	get_rotated_matrix(t_camera *camera);
+void		print_t_matrix(t_matrix4 *matrix);
+t_matrix4	m4_mult(t_matrix4 mat_a, t_matrix4 mat_b);
+t_vector4d	vec4_m4_mult(t_vector4d vec4, t_matrix4 m4);
+
 
 /*
 ** draw.c

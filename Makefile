@@ -18,14 +18,10 @@ ALL_C = main.c \
 		debug_print.c \
 		aux.c \
 		load_textures.c \
-		distance.c \
-		pseudo_3d.c \
 		draw.c \
 		music.c \
 		render_text.c \
 		guns_shot.c \
-		distance_horiz.c \
-		distance_vert.c \
 		render_coin.c \
 		move.c \
 		init_bonus.c \
@@ -50,7 +46,7 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 COMP_LIB = make -C $(LIBFT_DIR)
 CC = gcc
-FLAGS = -Wall -Wextra -Werror -ffast-math -O3
+FLAGS = -Wall -Wextra -Werror -ffast-math -O3 -funroll-loops
 
 SDL_INCS =	-F./frameworks \
 			-I./frameworks/SDL2.framework/Headers \

@@ -17,11 +17,7 @@ void	init_player(t_wolf *wolf, t_player *p, t_map *map)
 	int	i;
 
 	i = -1;
-	while (++i < W)
-	{
-		p->distance_horiz[i] = t_distance_new(wolf);
-		p->distance_vert[i] = t_distance_new(wolf);
-	}
+	(void)wolf;
 	p->size = 10;
 	p->x = CUBE * (map->player_start % map->w) + p->size;
 	p->y = CUBE * (map->player_start / map->w) + p->size;

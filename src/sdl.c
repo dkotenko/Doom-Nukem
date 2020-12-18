@@ -99,12 +99,9 @@ void			wolf_loop(t_wolf *wolf)
 	{
 		handle_event(wolf, &event, &x);
 		draw_background(wolf->surface);
-		all_get_distance(wolf);
-		pseudo_3d(wolf, wolf->player, wolf->surface);
-		render_coin(wolf, wolf->surface);
-		render_score_coin(wolf);
+		//all_get_distance(wolf);
+		//pseudo_3d(wolf, wolf->player, wolf->surface);
 		render_fps(wolf, wolf->bon);
-		render_shot(wolf, wolf->surface);
 		wolf->map->mm_show ? draw_minimap(wolf, wolf->map, wolf->player) : 0;
 		wolf->sdl->menu ? draw_menu(wolf) : 0;
 		SDL_UpdateWindowSurface(wolf->sdl->win);
