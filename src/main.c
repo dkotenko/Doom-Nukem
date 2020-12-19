@@ -26,6 +26,7 @@ int				max(int a, int b)
 	return (a > b ? a : b);
 }
 
+/*
 t_wolf	*t_wolf_new(void)
 {
 	t_wolf		*new;
@@ -40,7 +41,7 @@ t_wolf	*t_wolf_new(void)
 		error(new, ERR_MALLOC);
 	return (new);
 }
-
+*/
 void		validate_const(t_wolf *wolf)
 {
 	H > W ? error(wolf, ERR_INV_H) : 0;
@@ -77,7 +78,7 @@ t_vector4d		vec4_m4_mult(t_vector4d vec4, t_matrix4 m4)
 	return (new);
 }
 
-t_matrix4		m4_mult(t_matrix4 *mat_a, t_matrix4 *mat_b)
+t_matrix4		m4_mult(t_matrix4 mat_a, t_matrix4 mat_b)
 {
 	int			i;
 	int			j;
@@ -94,8 +95,8 @@ t_matrix4		m4_mult(t_matrix4 *mat_a, t_matrix4 *mat_b)
 			k = -1;
 			while (++k < M4_SIDE)
 				new.matrix[i * M4_SIDE + j] += \
-				mat_a->matrix[i * M4_SIDE + k] * \
-				mat_b->matrix[k * M4_SIDE + j];
+				mat_a.matrix[i * M4_SIDE + k] * \
+				mat_b.matrix[k * M4_SIDE + j];
 		}
 	}
 	return new;
@@ -151,12 +152,41 @@ int				main(int argc, char **argv)
 */
 
 
+
 int				main(void)
 {
 	
 	t_matrix4 a;
 	t_matrix4 b;
+	
+	t_vector4d v0 = (t_vector4d){0,0,0,0};
+	t_vector4d v1 = (t_vector4d){0,1,0,0};
+	t_vector4d v2 = (t_vector4d){1,1,0,0};
+	t_vector4d v3 = (t_vector4d){1,0,0,0};
+	t_vector4d v4 = (t_vector4d){0,0,1,0};
+	t_vector4d v5 = (t_vector4d){0,1,1,0};
+	t_vector4d v6 = (t_vector4d){1,1,1,0};
+	t_vector4d v7 = (t_vector4d){1,0,1,0};
+	t_render render;
 
+	render.camera = t_camera_new((t_vector3d){0,0,-2});
+	render.projection = t_projection_new();
+	/*
+	draw_line(v0, v1);
+	draw_line(v0, v3);
+	draw_line(v0, v4);
+	draw_line(v1, v5);
+	draw_line(v1, v2);
+	draw_line(v2, v3);
+	draw_line(v2, v6);
+	draw_line(v3, v7);
+	draw_line(v4, v5);
+	draw_line(v4, v7);
+	draw_line(v5, v6);
+	draw_line(v6, v7);
+	*/
+
+	/*
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -165,9 +195,12 @@ int				main(void)
 			b.matrix[i * M4_ROWS + j] = 12. * (j + i);
 		}
 	}
-	print_t_matrix(&b);
+	//print_t_matrix(&b);
 	t_vector4d v = (t_vector4d){2,3,4,5};
-	ft_printf("%f %f %f %f", v.x, v.y, v.z, v.w);
+	//ft_printf("%f %f %f %f", v.x, v.y, v.z, v.w);
 	v = vec4_m4_mult(v, a);
+	*/
+	
+
 }
 

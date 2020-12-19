@@ -11,22 +11,6 @@
 # **************************************************************************** #
 
 ALL_C = main.c \
-		map.c \
-		error.c \
-		sdl.c \
-		init.c \
-		debug_print.c \
-		aux.c \
-		load_textures.c \
-		draw.c \
-		music.c \
-		render_text.c \
-		guns_shot.c \
-		render_coin.c \
-		move.c \
-		init_bonus.c \
-		set_sdl.c \
-		bsp.c
 
 SRCDIR = ./src
 OBJDIR = ./objs

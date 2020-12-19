@@ -43,23 +43,6 @@ typedef struct	s_polygons
 	int			amount;
 }			t_polygons;
 
-typedef struct	s_map
-{
-	char		*map;
-	int			w;
-	int			h;
-	int			w_pix;
-	int			h_pix;
-	t_point		mm_start;
-	int			mm_cube;
-	int			mm_show;
-	int			mm_w;
-	int			mm_h;
-	int			mm_p_size;
-	float		mm_map_coef;
-	float		mm_cube_coef;
-	int			player_start;
-}				t_map;
 
 typedef struct	s_float2
 {
@@ -92,24 +75,6 @@ typedef struct	s_player
 	t_distance	*distance_horiz[W];
 	t_distance	*distance_vert[W];
 }				t_player;
-
-typedef	struct	s_coin
-{
-	float		angle;
-	float		dist;
-	float		temp_1;
-	float		temp_2;
-	float		temp_3;
-	float		temp_4;
-	float		temp_5;
-	int			i;
-	int			flag_1;
-	int			flag_2;
-	int			flag_i;
-	int			count;
-	SDL_Rect	cut_vertical_img;
-	SDL_Rect	img_location;
-}				t_coin;
 
 typedef struct	s_bonus
 {
@@ -150,14 +115,6 @@ typedef struct	s_sdl
 	int			menu;
 }				t_sdl;
 
-typedef struct	s_wolf
-{
-	t_map		*map;
-	t_player	*player;
-	t_sdl		*sdl;
-	SDL_Surface	*surface;
-	t_bonus		*bon;
-}				t_wolf;
 
 /*
 ==========================
@@ -185,6 +142,20 @@ typedef	struct s_camera
 	float		rotation_speed; // = 0.015
 }			t_camera;
 
+typedef struct	s_projection
+{
+	t_matrix4	projection_matrix;
+	t_matrix4	to_screen_matrix;
+}				t_projection;
+
+typedef	struct	s_render
+{
+	int			half_width;
+	int			half_height;
+	t_camera	*camera;
+	t_projection *projection;
+}				t_render;
+
 t_matrix4	translate(t_camera *camera);
 t_matrix4	rotate_x(float angle);
 t_matrix4	rotate_y(float angle);
@@ -197,148 +168,8 @@ void		print_t_matrix(t_matrix4 *matrix);
 t_matrix4	m4_mult(t_matrix4 mat_a, t_matrix4 mat_b);
 t_vector4d	vec4_m4_mult(t_vector4d vec4, t_matrix4 m4);
 
+t_matrix4		*t_matrix4_new(float values[M4_SIZE]);
 
-/*
-** draw.c
-*/
-void			draw_background(SDL_Surface *surface);
-int				draw_minimap(t_wolf *wolf, t_map *map, t_player *p);
-void			draw_ray(t_wolf *wolf, float player, int x, int y);
-void			draw_line(SDL_Surface *surface, t_point start, t_point end,
-				int color);
-void			draw_rectangle(SDL_Surface *surface, t_point start,
-				t_point width_height, int color);
 
-/*
-** sdl.c
-*/
-void			wolf_loop(t_wolf *wolf);
-
-/*
-** main.c
-*/
-t_point			dot(int x, int y);
-int				max(int a, int b);
-
-/*
-** move.c
-*/
-void			calc_move(t_map *map, t_player *p, float dy, float dx);
-void			rotate(t_wolf *wolf, SDL_Event *event, int *x);
-void			add_skybox_offset(t_sdl *sdl, int to_add);
-
-/*
-** load_textures.c
-*/
-void			set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
-Uint32			get_pixel(SDL_Surface *surface, int x, int y);
-int				is_texture(t_map *map, int x, int y, char texture);
-
-/*
-** debug_print.c
-*/
-void			debug_map(t_map *map);
-void			debug_player(t_player *p);
-
-/*
-** map.c
-*/
-void			init_map(t_wolf *wolf, char *b);
-
-/*
-** error.q
-*/
-int				error_free_s(t_wolf *wolf, char *s);
-int				error(t_wolf *wolf, const char *s);
-int				error_inv_c(t_wolf *wolf, char *s, char inv_char);
-int				error_inv_n(t_wolf *wolf, char *s, int inv_num);
-
-/*
-** init.c
-*/
-void			init_player(t_wolf *wolf, t_player *player, t_map *map);
-void			init_sdl(t_wolf *wolf);
-void			init_mm(t_map *map);
-void			init_tex_arr(t_wolf *wolf);
-
-/*
-** init_bonus.c
-*/
-void			init_bonus(t_wolf *wolf);
-void			init_bonus_load(t_wolf *wolf);
-
-/*
-** aux.c
-*/
-int				draw_menu(t_wolf *wolf);
-int				draw_menu_text(t_wolf *wolf, SDL_Color f_b_color[2]);
-int				add_arc(float *arc, float to_add);
-int				is_angle(float angle, float rad);
-int				float_is_equal(float a, float b);
-
-/*
-** render_text.c
-*/
-void			render_text(t_wolf *wolf, char *text, SDL_Rect location,
-				SDL_Color f_b_color[2]);
-void			render_score_coin(t_wolf *wolf);
-void			render_fps(t_wolf *wolf, t_bonus *bon);
-int				get_fps_time(t_bonus *bon);
-
-/*
-** distance.c
-*/
-t_distance		*dist_to_wall(t_wolf *wolf, float angle, int count_distance);
-t_distance		*t_distance_new(t_wolf *wolf);
-void			t_distance_clear(t_distance *dist);
-void			all_get_distance(t_wolf *wolf);
-void			free_dist_arr(t_wolf *wolf);
-
-/*
-** render_coin.c
-*/
-void			render_coin(t_wolf *wolf, SDL_Surface *surface);
-int				score_coin(t_wolf *wolf, t_coin *coin);
-int				search_angle(t_wolf *wolf, t_coin *coin);
-void			through_zero(t_wolf *wolf, t_coin *coin);
-void			wall_check_coin(t_wolf *wolf, t_coin *coin);
-
-/*
-** set_sdl.c
-*/
-SDL_Color		set_color_sdl(int a, int b, int c);
-SDL_Rect		set_rect_sdl(int x, int y, int w, int h);
-
-/*
-** pseudo_3d.c
-*/
-void			pseudo_3d(t_wolf *wolf, t_player *player, SDL_Surface *surface);
-void			draw_sky(t_wolf *wolf, int x, int y);
-void			draw_floor(SDL_Surface *surface, int x, int y);
-void			draw_column(t_wolf *wolf, t_point point,
-t_distance *dist, int size);
-
-/*
-** distance_horiz.c
-*/
-t_distance		*find_horizontal_intersection(t_wolf *wolf,
-float angle, t_distance *dist);
-
-/*
-** distance_vert.c
-*/
-t_distance		*find_vertical_intersection(t_wolf *wolf,
-float angle, t_distance *dist);
-
-/*
-** guns_shot.c
-*/
-void			guns_shot(SDL_Surface *screen, int flag, t_bonus *bon);
-void			render_shot(t_wolf *wolf, SDL_Surface *surface);
-
-/*
-** music.c
-*/
-void			music(t_bonus *bon);
 
 #endif
