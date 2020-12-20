@@ -1,6 +1,6 @@
 #include "wolf3d.h"
 
-static	t_matrix4	*init_projection_matrix(t_camera *camera)
+static	t_matrix4	*init_projection_matrix(t_camera *camera, t_projection *proj)
 {
 	t_matrix4	*projection_matrix;
 	float		m00;
@@ -8,17 +8,34 @@ static	t_matrix4	*init_projection_matrix(t_camera *camera)
 	float		m22;
 	float		m32;
 
-	m00 = 2 / (tanf()
-
-
-
+	m00 = 2 / (proj->right - proj->left);
+	m11 = 2 / (proj->top - proj->bottom);
+	m22 = (proj->far + proj->near) / (proj->far - proj->near);
+	m32 = -2 * proj->near * proj->far / (proj->far - proj->near);
+	projection_matrix = t_matrix4_new((float []){
+			m00, 0.f, 0.f, 0.f,
+			0.f, m11, 0.f, 0.f,
+			0.f, 0.f, m22, 1.f,
+			0.f, 0.f, m32, 0.f
+		});
+	return (new);
 }
 
-static	t_matrix4	*init_to_screen_matrix()
+static	t_matrix4	*init_to_screen_matrix(t_render *render)
 {
 	t_matrix4	*to_screen_matrix;
+	float		hw;
+	float		hh;
 
-
+	hw = render->half_width;
+	hh = render->half_height;
+	to_screen_matrix = t_matrix4_new((float []){
+			hw, 0.f, 0.f, 0.f,
+			0.f, -hh, 0.f, 0.f,
+			0.f, 0.f, 1.f, 0.f,
+			hw, hh, 0.f, 1.f
+		});
+	return (new);
 }
 
 t_projection	*t_projection_new(t_render *render)
@@ -27,12 +44,26 @@ t_projection	*t_projection_new(t_render *render)
 
 	if (!(new = ft_memalloc(sizeof(t_projection))))
 		return NULL;
+	new->near = render->camera->near_plane;
+	new->far = render->camera->far_plane;
+	new->right = tanf(render->camera->h_fov / 2);
+	new->left = -new->right;
+	new->top = tanf(render->camera->v_fov / 2);
+	new->bottom = -new->top;
+}
+
+void			t_projection_init(t_render *render)
+{
+	t_projection	*new;
+
+	new = t_projection_new(render);
 	new->projection_matrix = init_projection_matrix(render->camera);
 	if (!new->projection_matrix)
 		return NULL;
 	new->to_screen_matrix = init_to_screen_matrix();
 	if (!new->to_screen_matrix)
 		return NULL;
+	render->projection = new;
 }
 
 

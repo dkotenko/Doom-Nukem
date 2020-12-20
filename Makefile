@@ -6,11 +6,14 @@
 #    By: clala <clala@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/15 16:58:46 by clala             #+#    #+#              #
-#    Updated: 2020/12/05 20:12:37 by clala            ###   ########.fr        #
+#    Updated: 2020/12/20 20:45:15 by clala            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ALL_C = main.c \
+		object3d.c \
+		projection.c \
+		camera.c \
 
 SRCDIR = ./src
 OBJDIR = ./objs

@@ -6,7 +6,7 @@
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 18:31:45 by clala             #+#    #+#             */
-/*   Updated: 2020/12/05 20:18:03 by clala            ###   ########.fr       */
+/*   Updated: 2020/12/20 20:47:36 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,15 @@ typedef struct	s_sdl
 
 /*
 ==========================
+
 */
+
+typedef struct	s_object
+{
+	t_vector4d	verteces[];
+	t_vector4d	faces[];
+}				t_object;
+
 typedef struct	s_vector3d
 {
 	float		x;
@@ -146,6 +154,12 @@ typedef struct	s_projection
 {
 	t_matrix4	projection_matrix;
 	t_matrix4	to_screen_matrix;
+	float		near;
+	float		far;
+	float		right;
+	float 		left;
+	float		top;
+	float		bottom;
 }				t_projection;
 
 typedef	struct	s_render
