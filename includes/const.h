@@ -44,14 +44,14 @@
 # define TEX_EYES '4'
 # define TEX_ISLE '5'
 
-# define W 800
-# define H 600
+# define W 1600
+# define H 900
 # define W_MAX 1920
 # define H_MAX 1080
 # define CUBE 64
 
 # define PLAYER_MM_SIZE 4
-# define KLUDGE 0.0001
+# define EPSILON 0.0001f
 # define RAD_360 6.28319f
 # define RAD_1 0.0174533f
 # define RAD_60 1.047200f

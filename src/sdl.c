@@ -12,41 +12,47 @@
 
 #include "wolf3d.h"
 
-static void		handle_other_keys(t_wolf *wolf)
+/*
+static void		handle_other_keys(t_render *render)
 {
-	if (wolf->sdl->state[SDL_SCANCODE_I])
-		wolf->bon->fps = wolf->bon->fps == 0 ? 1 : 0;
-	if (wolf->sdl->state[SDL_SCANCODE_SPACE])
-		wolf->bon->guns_fire = 1;
-	if (wolf->sdl->state[SDL_SCANCODE_H])
-		wolf->sdl->menu = wolf->sdl->menu ? 0 : 1;
-	if (wolf->sdl->state[SDL_SCANCODE_O])
-	{
-		if (wolf->bon->music_flag == 0)
-		{
-			Mix_PlayMusic(wolf->bon->music, -1);
-			wolf->bon->music_flag = 1;
-		}
-		else
-		{
-			wolf->bon->music_flag = 0;
-			Mix_HaltMusic();
-		}
-	}
+	if (render->sdl->state[SDL_SCANCODE_I])
+		render->bon->fps = render->bon->fps == 0 ? 1 : 0;
+	if (render->sdl->state[SDL_SCANCODE_H])
+		render->sdl->menu = render->sdl->menu ? 0 : 1;
 }
-
-static void		handle_keys(t_wolf *wolf, SDL_Event *event, t_map *map,
-	t_player *p)
+*/
+static void		handle_keys(t_render *render, SDL_Event *event)
 {
 	const		Uint8 *s;
 
-	s = wolf->sdl->state;
+	s = render->sdl->state;
 	if (event->key.keysym.sym == SDLK_ESCAPE)
-		wolf->sdl->run = false;
+		render->sdl->run = false;
+	
 	if (s[SDL_SCANCODE_D])
-		calc_move(wolf->map, p, p->speed * sinf(p->dir + RAD_90),
-		-(p->speed * cosf(p->dir + RAD_90)));
+		render->camera->position = t_vec4_add(render->camera->position, t_vec4_muln(render->camera->right, render->camera->moving_speed));
 	if (s[SDL_SCANCODE_A])
+		render->camera->position = t_vec4_sub(render->camera->position, t_vec4_muln(render->camera->right, render->camera->moving_speed));
+	if (s[SDL_SCANCODE_W])
+		render->camera->position = t_vec4_add(render->camera->position, t_vec4_muln(render->camera->forward, render->camera->moving_speed));
+	if (s[SDL_SCANCODE_S])
+	{
+		render->camera->position = t_vec4_sub(render->camera->position, t_vec4_muln(render->camera->forward, render->camera->moving_speed));
+	}
+	if (s[SDL_SCANCODE_Q])
+		render->camera->position = t_vec4_add(render->camera->position, t_vec4_muln(render->camera->up, render->camera->moving_speed));
+	if (s[SDL_SCANCODE_E])
+		render->camera->position = t_vec4_sub(render->camera->position, t_vec4_muln(render->camera->up, render->camera->moving_speed));
+	
+	if (s[SDL_SCANCODE_LEFT])
+		camera_yaw(render->camera, -render->camera->rotation_speed);
+	if (s[SDL_SCANCODE_RIGHT])
+		camera_yaw(render->camera, render->camera->rotation_speed);
+	if (s[SDL_SCANCODE_UP])
+		camera_pitch(render->camera, render->camera->rotation_speed);
+	if (s[SDL_SCANCODE_DOWN])
+		camera_pitch(render->camera, -render->camera->rotation_speed);
+	/*
 		calc_move(map, p, p->speed * sinf(p->dir - RAD_90),
 		-(p->speed * cosf(p->dir - RAD_90)));
 	if (s[SDL_SCANCODE_DOWN] || s[SDL_SCANCODE_S])
@@ -55,58 +61,57 @@ static void		handle_keys(t_wolf *wolf, SDL_Event *event, t_map *map,
 		calc_move(map, p, -(p->speed * sinf(p->dir)), p->speed * cosf(p->dir));
 	if ((s[SDL_SCANCODE_RIGHT] || s[SDL_SCANCODE_E])
 	&& add_arc(&p->dir, -RAD_30))
-		add_skybox_offset(wolf->sdl, 52);
+		add_skybox_offset(render->sdl, 52);
 	if ((s[SDL_SCANCODE_LEFT] || s[SDL_SCANCODE_Q]) && add_arc(&p->dir, RAD_30))
-		add_skybox_offset(wolf->sdl, -52);
+		add_skybox_offset(render->sdl, -52);
 	if (s[SDL_SCANCODE_P])
-		wolf->sdl->sides_mode = wolf->sdl->sides_mode == 1 ? 0 : 1;
+		render->sdl->sides_mode = render->sdl->sides_mode == 1 ? 0 : 1;
 	if (s[SDL_SCANCODE_M])
 		map->mm_show = map->mm_show == 1 ? 0 : 1;
-	handle_other_keys(wolf);
+	handle_other_keys(render);
+	
+*/
 }
 
-static void		handle_event(t_wolf *wolf, SDL_Event *event, int *x)
+static void		handle_event(t_render *render, SDL_Event *event)
 {
-	if (SDL_PollEvent(event))
+	while (SDL_PollEvent(event))
 	{
 		if (event->type == SDL_QUIT)
-			wolf->sdl->run = false;
+			render->sdl->run = false;
+			/*
 		if (event->type == SDL_MOUSEMOTION)
-			rotate(wolf, event, x);
-		if (event->type == SDL_MOUSEBUTTONDOWN)
-		{
-			if (event->button.button == SDL_BUTTON_LEFT)
-				wolf->bon->guns_fire = 1;
-		}
-		if (event->type == SDL_MOUSEBUTTONUP)
-		{
-			if (event->button.button == SDL_BUTTON_LEFT)
-				wolf->bon->guns_fire = 0;
-		}
+			rotate(render, event, x);
+			*/
 		if (event->type == SDL_KEYDOWN)
-			handle_keys(wolf, event, wolf->map, wolf->player);
+			handle_keys(render, event);
 	}
 }
 
-void			wolf_loop(t_wolf *wolf)
+
+void			render_loop(t_render *render)
 {
 	SDL_Event	event;
 	int			x;
 
-	init_sdl(wolf);
+	init_sdl(render);
 	x = -0x7fffff;
-	while (wolf->sdl->run)
+	while (render->sdl->run)
 	{
-		handle_event(wolf, &event, &x);
-		draw_background(wolf->surface);
-		//all_get_distance(wolf);
-		//pseudo_3d(wolf, wolf->player, wolf->surface);
-		render_fps(wolf, wolf->bon);
-		wolf->map->mm_show ? draw_minimap(wolf, wolf->map, wolf->player) : 0;
-		wolf->sdl->menu ? draw_menu(wolf) : 0;
-		SDL_UpdateWindowSurface(wolf->sdl->win);
+		//print_t_polygon(render->object->sector->polygons[0]);	
+		handle_event(render, &event); //, &x);
+		draw_background(render->surface);
+		
+		screen_projection(render, render->object);
+		draw_polygons(render);
+		//all_get_distance(render);
+		//pseudo_3d(render, render->player, render->surface);
+		render_fps(render, render->bon);
+		//render->map->mm_show ? draw_minimap(render, render->map, render->player) : 0;
+		//render->sdl->menu ? draw_menu(render) : 0;
+		SDL_UpdateWindowSurface(render->sdl->win);
 	}
-	SDL_DestroyWindow(wolf->sdl->win);
+	SDL_DestroyWindow(render->sdl->win);
 	TTF_Quit();
 	SDL_Quit();
 	exit(EXIT_SUCCESS);

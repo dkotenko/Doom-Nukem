@@ -60,28 +60,6 @@ t_point width_height, int color)
 	}
 }
 
-void		draw_ray(t_wolf *wolf, float dir, int x, int y)
-{
-	int		dx0;
-	int		dy0;
-	int		dx1;
-	int		dy1;
-
-	dx0 = cos(dir - wolf->player->fov / 2) * wolf->map->mm_cube * 4;
-	dy0 = sin(dir - wolf->player->fov / 2) * wolf->map->mm_cube * 4;
-	dx1 = cos(dir + wolf->player->fov / 2) * wolf->map->mm_cube * 4;
-	dy1 = sin(dir + wolf->player->fov / 2) * wolf->map->mm_cube * 4;
-	draw_line(
-		wolf->surface,
-		dot(x, y),
-		dot(x + dx0, y - dy0),
-		COLOR_WHITE);
-	draw_line(
-		wolf->surface,
-		dot(x, y),
-		dot(x + dx1, y - dy1),
-		COLOR_WHITE);
-}
 
 void		draw_background(SDL_Surface *surface)
 {
@@ -99,28 +77,60 @@ void		draw_background(SDL_Surface *surface)
 	}
 }
 
-int			draw_minimap(t_wolf *wolf, t_map *map, t_player *p)
-{
-	int		i;
 
-	draw_rectangle(wolf->surface, map->mm_start, dot(map->mm_w, map->mm_h),
-		COLOR_GREY_LIGHT);
-	i = -1;
-	while (++i < map->h * map->w)
+#define RED 0xFF0000
+// Function to put pixels 
+// at subsequence points 
+static void drawCircle(SDL_Surface *surface, int xc, int yc, int x, int y) 
+{
+	if (xc+x < W)
 	{
-		if (ft_strchr(WALLSET, map->map[i]))
-		{
-			draw_rectangle(wolf->surface, dot(
-				((i % map->w) * map->mm_cube + map->mm_start.x),
-				((i / map->w) * map->mm_cube + map->mm_start.y)),
-			dot(map->mm_cube, map->mm_cube), 0xbbbb00);
-		}
+		if (yc+y < H)
+			set_pixel(surface, xc+x, yc+y, RED);
+		if (yc-y > -1)
+			set_pixel(surface, xc+x, yc-y, RED);
 	}
-	draw_rectangle(wolf->surface,
-		dot(p->x * map->mm_cube_coef + (map->mm_start.x - map->mm_p_size),
-			p->y * map->mm_cube_coef + (map->mm_start.y - map->mm_p_size)),
-		dot(map->mm_p_size * 2, map->mm_p_size * 2), 0xFFFFFF);
-	draw_ray(wolf, p->dir, p->x * map->mm_cube_coef + map->mm_start.x,
-		p->y * map->mm_cube_coef + map->mm_start.y);
-	return (1);
-}
+	if (xc-x > -1)
+	{
+		if (yc+y < H)
+			set_pixel(surface, xc-x, yc+y, RED);
+		if (yc-y > -1)
+			set_pixel(surface, xc-x, yc-y, RED);
+	}
+	if (xc-y > -1)
+	{
+		if (yc+x < H)
+			set_pixel(surface, xc-y, yc+x, RED);
+		if (yc-x > -1)
+			set_pixel(surface, xc-y, yc-x, RED);
+	}
+	if (xc+y < W)
+	{
+		if (yc+x < H)
+			set_pixel(surface, xc+y, yc+x, RED);
+		if (yc-x > -1)
+			set_pixel(surface, xc+y, yc-x, RED);
+	}
+} 
+  
+
+void draw_circle(SDL_Surface *surface, int xc, int yc, int r) 
+{ 
+    int x = 0, y = r; 
+    int d = 3 - 2 * r; 
+    drawCircle(surface, xc, yc, x, y); 
+    while (y >= x) 
+    { 
+        x++; 
+  
+      
+        if (d > 0) 
+        { 
+            y--;  
+            d = d + 4 * (x - y) + 10; 
+        } 
+        else
+            d = d + 4 * x + 6; 
+        drawCircle(surface, xc, yc, x, y);
+    } 
+} 

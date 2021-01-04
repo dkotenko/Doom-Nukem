@@ -26,22 +26,28 @@ int				max(int a, int b)
 	return (a > b ? a : b);
 }
 
-/*
-t_wolf	*t_wolf_new(void)
-{
-	t_wolf		*new;
 
-	!(new = (t_wolf *)malloc(sizeof(t_wolf))) ? error(new, ERR_MALLOC) : 0;
-	!(new->map = (t_map *)malloc(sizeof(t_map))) ? error(new, ERR_MALLOC) : 0;
-	if (!(new->player = (t_player *)malloc(sizeof(t_player))))
-		error(new, ERR_MALLOC);
+t_render	*t_render_new(void)
+{
+	t_render		*new;
+
+	!(new = (t_render *)malloc(sizeof(t_render))) ? error(new, ERR_MALLOC) : 0;
+	
 	if (!(new->sdl = (t_sdl *)malloc(sizeof(t_sdl))))
 		error(new, ERR_MALLOC);
 	if (!(new->bon = (t_bonus *)malloc(sizeof(t_bonus))))
 		error(new, ERR_MALLOC);
+	new->height = H;
+	new->width = W;
+	new->half_height = H / 2;
+	new->half_width = W / 2;
 	return (new);
 }
-*/
+
+
+
+
+/*
 void		validate_const(t_wolf *wolf)
 {
 	H > W ? error(wolf, ERR_INV_H) : 0;
@@ -49,142 +55,94 @@ void		validate_const(t_wolf *wolf)
 	H > H_MAX ? error_inv_n(wolf, ERR_H_MAX, H_MAX) : 0;
 	W > W_MAX ? error_inv_n(wolf, ERR_W_MAX, W_MAX) : 0;
 }
-
-
-
-t_vector4d		t_vec4_new(float x, float y, float z, float w)
-{
-	t_vector4d	v4;
-
-	v4.x = x;
-	v4.y = y;
-	v4.z = z;
-	v4.w = w;
-	return (v4);
-}
-
-t_vector4d		vec4_m4_mult(t_vector4d vec4, t_matrix4 m4)
-{
-	t_vector4d	new;
-
-	new.x = vec4.x * m4.matrix[0] + vec4.y * m4.matrix[1] + \
-		vec4.z * m4.matrix[2] + vec4.w * m4.matrix[3];
-	new.y = vec4.x * m4.matrix[4] + vec4.y * m4.matrix[5] + \
-		vec4.z * m4.matrix[6] + vec4.w * m4.matrix[7];
-	new.z = vec4.x * m4.matrix[8] + vec4.y * m4.matrix[9] + \
-		vec4.z * m4.matrix[10] + vec4.w * m4.matrix[11];
-	new.w = vec4.x * m4.matrix[12] + vec4.y * m4.matrix[13] + \
-		vec4.z * m4.matrix[14] + vec4.w * m4.matrix[15];
-	return (new);
-}
-
-t_matrix4		m4_mult(t_matrix4 mat_a, t_matrix4 mat_b)
-{
-	int			i;
-	int			j;
-	int			k;
-	t_matrix4	new;
-	
-	ft_memset(&new, 0, sizeof(t_matrix4));
-	i = -1;
-	while (++i < M4_SIDE)
-	{
-		j = -1;
-		while (++j < M4_SIDE)
-		{
-			k = -1;
-			while (++k < M4_SIDE)
-				new.matrix[i * M4_SIDE + j] += \
-				mat_a.matrix[i * M4_SIDE + k] * \
-				mat_b.matrix[k * M4_SIDE + j];
-		}
-	}
-	return new;
-}
-
-
-void			print_t_matrix(t_matrix4 *matrix)
-{
-	int			i;
-	int			j;
-
-	i = -1;
-	while (++i < M4_ROWS)
-	{
-		j = -1;
-		while (++j < M4_COLUMNS)
-		{
-			ft_printf("%f ", matrix->matrix[i * M4_COLUMNS + j]);
-		}
-		ft_printf("\n");
-	}
-	
-}
+*/
 
 /*
-int				main(int argc, char **argv)
-{
-	t_wolf		*wolf;
-
-	(void)argv;
-	
-	wolf = NULL;
-	wolf = t_wolf_new();
-	validate_const(wolf);
-	argc != 2 ? error(wolf, ERR_USAGE) : 0;
-	SDL_Init(SDL_INIT_EVERYTHING) != 0 ? error(wolf, SDL_GetError()) : 0;
-	TTF_Init() != 0 ? error(wolf, SDL_GetError()) : 0;
-
-	
-
-
-	
-	
-	init_map(wolf, argv[1]);
-	init_player(wolf, wolf->player, wolf->map);
-	init_bonus(wolf);
-	music(wolf->bon);
-	init_tex_arr(wolf);
-	
-	wolf_loop(wolf);
-	return (0);
-}
+** No array overflow handling
 */
 
 
 
+
+
+void here()
+{
+	ft_printf("here\n");
+}
+
 int				main(void)
 {
+	t_render *render;
+	//t_matrix4 a;
+	//t_matrix4 b;
+	render = NULL;
+	SDL_Init(SDL_INIT_EVERYTHING) != 0 ? error(render, SDL_GetError()) : 0;
+	TTF_Init() != 0 ? error(render, SDL_GetError()) : 0;
 	
-	t_matrix4 a;
-	t_matrix4 b;
+	t_sector *sector = t_sector_new(6);
+	t_polygon *side1 = t_polygon_new(4, COLOR_SKY_BLUE);
+	t_polygon *side2 = t_polygon_new(4, 0xFF0000);
+	t_polygon *side3 = t_polygon_new(4, COLOR_GREY);
+	t_polygon *side4 = t_polygon_new(4, COLOR_GREY_LIGHT);
+	t_polygon *side5 = t_polygon_new(4, 0x00FF00);
+	t_polygon *side6 = t_polygon_new(4, 0xFFFF00);
 	
-	t_vector4d v0 = (t_vector4d){0,0,0,0};
-	t_vector4d v1 = (t_vector4d){0,1,0,0};
-	t_vector4d v2 = (t_vector4d){1,1,0,0};
-	t_vector4d v3 = (t_vector4d){1,0,0,0};
-	t_vector4d v4 = (t_vector4d){0,0,1,0};
-	t_vector4d v5 = (t_vector4d){0,1,1,0};
-	t_vector4d v6 = (t_vector4d){1,1,1,0};
-	t_vector4d v7 = (t_vector4d){1,0,1,0};
-	t_render render;
+	t_sector_add_polygon(sector, side1);
+	t_sector_add_polygon(sector, side2);
+	t_sector_add_polygon(sector, side3);
+	t_sector_add_polygon(sector, side4);
+	t_sector_add_polygon(sector, side5);
+	t_sector_add_polygon(sector, side6);
 
-	render.camera = t_camera_new((t_vector3d){0,0,-2});
-	render.projection = t_projection_new();
-	/*
-	draw_line(v0, v1);
-	draw_line(v0, v3);
-	draw_line(v0, v4);
-	draw_line(v1, v5);
-	draw_line(v1, v2);
-	draw_line(v2, v3);
-	draw_line(v2, v6);
-	draw_line(v3, v7);
-	draw_line(v4, v5);
-	draw_line(v4, v7);
-	draw_line(v5, v6);
-	draw_line(v6, v7);
-	*/
+	t_vector4d v1 = t_vec4_new(-0.5f, -0.5f, -0.5f, 1.f);
+	t_vector4d v2 = t_vec4_new(-0.5f, 0.5f, -0.5f, 1.f);
+	t_vector4d v3 = t_vec4_new(0.5f, 0.5f, -0.5f, 1.f);
+	t_vector4d v4 = t_vec4_new(0.5f, -0.5f, -0.5f, 1.f);
+	t_vector4d v5 = t_vec4_new(-0.5f, -0.5f, 0.5f, 1.f);
+	t_vector4d v6 = t_vec4_new(-0.5f, 0.5f, 0.5f, 1.f);
+	t_vector4d v7 = t_vec4_new(0.5f, 0.5f, 0.5f, 1.f);
+	t_vector4d v8 = t_vec4_new(0.5f, -0.5f, 0.5f, 1.f);
+
+	t_polygon_add_vertex(side1, v1);
+	t_polygon_add_vertex(side1, v2);
+	t_polygon_add_vertex(side1, v3);
+	t_polygon_add_vertex(side1, v4);
+
+	t_polygon_add_vertex(side2, v1);
+	t_polygon_add_vertex(side2, v5);
+	t_polygon_add_vertex(side2, v6);
+	t_polygon_add_vertex(side2, v2);
+
+	t_polygon_add_vertex(side3, v5);
+	t_polygon_add_vertex(side3, v6);
+	t_polygon_add_vertex(side3, v7);
+	t_polygon_add_vertex(side3, v8);
+
+	t_polygon_add_vertex(side4, v3);
+	t_polygon_add_vertex(side4, v4);
+	t_polygon_add_vertex(side4, v8);
+	t_polygon_add_vertex(side4, v7);
+
+	t_polygon_add_vertex(side5, v1);
+	t_polygon_add_vertex(side5, v5);
+	t_polygon_add_vertex(side5, v8);
+	t_polygon_add_vertex(side5, v4);
+	
+	t_polygon_add_vertex(side6, v2);
+	t_polygon_add_vertex(side6, v6);
+	t_polygon_add_vertex(side6, v7);
+	t_polygon_add_vertex(side6, v3);
+
+	render = t_render_new();
+	render->camera = t_camera_new(render, t_vec3_new(-2.5f , 1.5f, -6.f));
+	
+	
+	t_projection_init(render);
+	render->object = t_object_new(render, &sector);
+	
+	init_bonus(render);
+	
+	render_loop(render);
 
 	/*
 	for (int i = 0; i < 4; i++)
@@ -198,7 +156,11 @@ int				main(void)
 	//print_t_matrix(&b);
 	t_vector4d v = (t_vector4d){2,3,4,5};
 	//ft_printf("%f %f %f %f", v.x, v.y, v.z, v.w);
+	print_t_matrix(&a);
+	print_t_matrix(&b);
+	a = m4_mult(a,b);
 	v = vec4_m4_mult(v, a);
+	print_t_matrix(&a);
 	*/
 	
 

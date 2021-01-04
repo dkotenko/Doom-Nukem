@@ -12,31 +12,31 @@
 
 #include "wolf3d.h"
 
-int		error(t_wolf *wolf, const char *s)
+int		error(t_render *render, const char *s)
 {
 	ft_dprintf(STDERR_FILENO, "%s%s%s\n", C_RED, s, C_NRM);
 	exit(EXIT_FAILURE);
-	return ((int)wolf);
+	return ((int)render);
 }
 
-int		error_free_s(t_wolf *wolf, char *s)
+int		error_free_s(t_render *render, char *s)
 {
 	ft_dprintf(STDERR_FILENO, "%s%s%s\n", C_RED, s, C_NRM);
 	free(s);
 	exit(EXIT_FAILURE);
-	return ((int)wolf);
+	return ((int)render);
 }
 
-int		error_inv_c(t_wolf *wolf, char *s, char inv_char)
+int		error_inv_c(t_render *render, char *s, char inv_char)
 {
 	ft_dprintf(STDERR_FILENO, "%s%s%c%s\n", C_RED, s, inv_char, C_NRM);
 	exit(EXIT_FAILURE);
-	return ((int)wolf);
+	return ((int)render);
 }
 
-int		error_inv_n(t_wolf *wolf, char *s, int inv_num)
+int		error_inv_n(t_render *render, char *s, int inv_num)
 {
 	ft_dprintf(STDERR_FILENO, "%s%s%c%s\n", C_RED, s, inv_num, C_NRM);
 	exit(EXIT_FAILURE);
-	return ((int)wolf);
+	return ((int)render);
 }

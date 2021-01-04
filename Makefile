@@ -14,13 +14,28 @@ ALL_C = main.c \
 		object3d.c \
 		projection.c \
 		camera.c \
+		matrix4.c \
+		matrix_functions.c \
+		set_sdl.c \
+		init_bonus.c \
+		init.c \
+		error.c \
+		sdl.c \
+		render_text.c \
+		draw.c \
+		load_textures.c \
+		t_vec4.c \
+		t_vec3.c \
+		t_sector.c \
+		t_polygon.c \
+		vertices.c
 
 SRCDIR = ./src
 OBJDIR = ./objs
 ALL_OBJ = $(ALL_C:%.c=%.o)
 OBJS = $(addprefix $(OBJDIR)/, $(ALL_OBJ))
 
-NAME = wolf3d
+NAME = doom_nukem
 
 INCLUDES = ./includes/wolf3d.h \
 			./includes/const.h \

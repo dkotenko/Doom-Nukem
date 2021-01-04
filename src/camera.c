@@ -1,6 +1,6 @@
 #include "wolf3d.h"
 
-t_camera		*t_camera_new(t_vector3d position)
+t_camera		*t_camera_new(t_render *render, t_vector3d position)
 {
 	t_camera	*new;
 
@@ -11,7 +11,7 @@ t_camera		*t_camera_new(t_vector3d position)
 	new->up = (t_vector4d){0.f, 1.f, 0.f, 1.f};
 	new->right = (t_vector4d){1.f, 0.f, 0.f, 1.f};
 	new->h_fov = M_PI / 3;
-	new->v_fov = new->h_fov * (H / W);
+	new->v_fov = new->h_fov * (render->height / render->width);
 	new->near_plane = 0.1f;
 	new->far_plane = 100.f;
 	new->moving_speed = 0.3f;
