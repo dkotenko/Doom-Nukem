@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: majosue <majosue@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 18:31:45 by clala             #+#    #+#             */
-/*   Updated: 2020/12/20 20:47:36 by clala            ###   ########.fr       */
+/*   Updated: 2021/01/05 22:19:52 by majosue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ typedef struct	s_polygon
 	int			to_draw;
 	int			color;
 	int			*vert_to_draw;
+
+	t_vector4d	normal_origin;
+	t_vector4d	normal;
 	//Texture* texture;
 	//Sector* sector;
 	//Plane plane;
@@ -216,7 +219,7 @@ int				max(int a, int b);
 
 /*
 ** draw.c
-*/ 
+*/
 void			draw_line(SDL_Surface *surface,
 t_point start, t_point end, int color);
 void			draw_rectangle(SDL_Surface *surface, t_point start,
@@ -276,6 +279,7 @@ void			print_t_vec4(t_vector4d v);
 ** t_polygon.c
 */
 void			t_polygon_add_vertex(t_polygon *polygon, t_vector4d to_add);
+void			t_polygon_add_normal(t_polygon *polygon, t_vector4d to_add);
 t_polygon		*t_polygon_new(int vert_number, int color);
 t_vector3d		t_polygon_get_centroid(t_polygon *polygon);
 void			print_t_polygon(t_polygon *polygon);

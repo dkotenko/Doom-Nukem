@@ -32,7 +32,7 @@ t_matrix4	get_translated_matrix(t_camera *camera)
 	return ((t_matrix4){ .matrix =
 		{
 			1.f, 0.f, 0.f, 0.f, \
-			0.f, 1.f, 0.f, 1.f, \
+			0.f, 1.f, 0.f, 0.f, \
 			0.f, 0.f, 1.f, 0.f, \
 			-camera->position.x, -camera->position.y, \
 			-camera->position.z, 1.f}});

@@ -33,6 +33,12 @@ void			t_polygon_add_vertex(t_polygon *polygon, t_vector4d to_add)
 	polygon->vertices[polygon->curr_size++] = new;
 }
 
+void			t_polygon_add_normal(t_polygon *polygon, t_vector4d to_add)
+{
+	polygon->normal_origin = to_add;
+	polygon->normal = to_add;
+}
+
 t_vector3d		t_polygon_get_centroid(t_polygon *polygon)
 {
 	int			i;
@@ -47,7 +53,7 @@ t_vector3d		t_polygon_get_centroid(t_polygon *polygon)
 	}
 	centroid = t_vec4_divn(centroid, polygon->curr_size);
 	return (t_vec3_new(centroid.x, centroid.y, centroid.z));
-	
+
 }
 
 
@@ -61,6 +67,6 @@ void	print_t_polygon(t_polygon *polygon)
 		print_t_vec4(polygon->vertices[i]->vertex_origin);
 		print_t_vec4(polygon->vertices[i]->vertex);
 	}
-	
+
 	exit(0);
 }

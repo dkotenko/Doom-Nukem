@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sdl.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: majosue <majosue@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 18:32:04 by clala             #+#    #+#             */
-/*   Updated: 2020/10/24 21:38:14 by clala            ###   ########.fr       */
+/*   Updated: 2021/01/04 23:27:25 by majosue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void		handle_keys(t_render *render, SDL_Event *event)
 	s = render->sdl->state;
 	if (event->key.keysym.sym == SDLK_ESCAPE)
 		render->sdl->run = false;
-	
+
 	if (s[SDL_SCANCODE_D])
 		render->camera->position = t_vec4_add(render->camera->position, t_vec4_muln(render->camera->right, render->camera->moving_speed));
 	if (s[SDL_SCANCODE_A])
@@ -43,7 +43,7 @@ static void		handle_keys(t_render *render, SDL_Event *event)
 		render->camera->position = t_vec4_add(render->camera->position, t_vec4_muln(render->camera->up, render->camera->moving_speed));
 	if (s[SDL_SCANCODE_E])
 		render->camera->position = t_vec4_sub(render->camera->position, t_vec4_muln(render->camera->up, render->camera->moving_speed));
-	
+
 	if (s[SDL_SCANCODE_LEFT])
 		camera_yaw(render->camera, -render->camera->rotation_speed);
 	if (s[SDL_SCANCODE_RIGHT])
@@ -69,7 +69,7 @@ static void		handle_keys(t_render *render, SDL_Event *event)
 	if (s[SDL_SCANCODE_M])
 		map->mm_show = map->mm_show == 1 ? 0 : 1;
 	handle_other_keys(render);
-	
+
 */
 }
 
@@ -98,10 +98,10 @@ void			render_loop(t_render *render)
 	x = -0x7fffff;
 	while (render->sdl->run)
 	{
-		//print_t_polygon(render->object->sector->polygons[0]);	
+		//print_t_polygon(render->object->sector->polygons[0]);
 		handle_event(render, &event); //, &x);
 		draw_background(render->surface);
-		
+
 		screen_projection(render, render->object);
 		draw_polygons(render);
 		//all_get_distance(render);
